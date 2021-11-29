@@ -1,11 +1,15 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+
+import { PassengerDashboardComponent } from "./containers/passenger-dashboard/passenger-dashboard.component";
 
 @NgModule({
-    declarations: [],
-    imports: [CommonModule],
-
+  declarations: [
+    PassengerDashboardComponent,
+  ],
+  imports: [CommonModule],
+  exports: [PassengerDashboardComponent]
 })
-export class PassengerDashboardModule { 
-    
+export class PassengerDashboardModule {
+
 }
