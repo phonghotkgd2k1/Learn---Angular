@@ -1,82 +1,98 @@
-import { Component, OnInit} from '@angular/core'
-import {Passenger} from '../../models/passenger.interface';
+import { Component, OnInit } from "@angular/core";
+
+import { Passenger } from '../../models/passenger.interface';
+
 @Component({
-    selector: 'passenger-dashboard',
-    styleUrls: ['./passenger-dashboard.component.scss'],
-    template:`
-        <div class="app">
-    <h3>Airline Passengers</h3>
-      <ul>
-        <li *ngFor="let passenger of passengers; let i = index">
-          <span class="status"
-            [class.checked-in] = "passenger.checkedIn">
-          </span>
-          {{ i }} {{ passenger.fullname }}
-          <!-- <p>{{ passenger | json }}</p> -->
-          <div class="date">
-              Check in date: {{ passenger.checkInDate ? (passenger.checkInDate | date: 'y, MMMM d' | uppercase) 
-              : 'Not checked in'}}
-          </div>
-          <div>
-            children: {{passenger.children?.length || 0}}
-          </div>
-        </li>
-      </ul>
-    
+  selector: 'passenger-dashboard',
+  styleUrls: ['./passenger-dashboard.component.scss'],
+  template: `
+    <div>
+      <passenger-count [items]="passengers">
+      </passenger-count>
+      <passenger-detail
+        *ngFor="let passenger of passengers"
+        [detail] = "passenger"
+        (edit)="handleEdit($event)"
+        (remove)="handleRemove($event)"
+        >
+      </passenger-detail>
     </div>
-    `
+  `
 })
-export class PassengerDashboardComponent implements OnInit { 
-    passengers!: Passenger[];
+export class PassengerDashboardComponent implements OnInit {
 
-    constructor(){
-        console.log("constructor");
-    }
+  passengers!: Passenger[];
 
-    ngOnInit(): void {
-        console.log("ngOnInit");
-        this.passengers = [
-            {
-              id: 1,
-              fullname: 'John',
-              checkedIn: true,
-              checkInDate: 1490742000000,
-              children: null
-            },
-            {
-              id: 2,
-              fullname: 'Stephen',
-              checkedIn: false,
-              checkInDate: null,
-              children: [{name: 'Teddy', age: 22}, {name: 'Gumayusi', age: 20}]
-        
-            },
-            {
-              id: 3,
-              fullname: 'Rose',
-              checkedIn: true,
-              checkInDate: 1491602000000,
-              children: [{name: 'Oner', age: 18}, {name: 'Cuzz', age: 21}]
-        
-            },
-            {
-              id: 4,
-              fullname: 'James',
-              checkedIn: true,
-              checkInDate: 1492742000000,
-              children: null
-        
-            },
-            {
-              id: 5,
-              fullname: 'Tina',
-              checkedIn: false,
-              checkInDate: null,
-              children: [{name: 'Faker', age: 25}, {name: 'Scout', age: 21}]
-        
-        
-            },
-          ];
-    }
+  constructor() {
+
+    console.log("constructor");
+  }
+
+  ngOnInit(): void {
+
+    console.log("ngOnInit");
+
+    this.passengers = [
+      {
+        id: 1,
+        fullname: 'John',
+        checkedIn: true,
+        checkedInDate: 1490742000000,
+        children: null,
+      },
+      {
+        id: 2,
+        fullname: 'Stephen',
+        checkedIn: false,
+        checkedInDate: null,
+        children: [{ name: 'Ted', age: 12 }, { name: 'Mark', age: 6 }]
+      },
+      {
+        id: 3,
+        fullname: 'Rose',
+        checkedIn: true,
+        checkedInDate: 1491602000000,
+        children: null,
+      },
+      {
+        id: 4,
+        fullname: 'James',
+        checkedIn: true,
+        checkedInDate: 1492742000000,
+        children: [{ name: 'Jesica', age: 3 }]
+      },
+      {
+        id: 5,
+        fullname: 'Tina',
+        checkedIn: false,
+        checkedInDate: null,
+        children: null
+      },
+    ];
+
     
+
+  }
+  handleEdit(event: Passenger){
+
+    this.passengers = this.passengers.map((passenger: Passenger) => {
+      if(passenger.id === event.id){
+        passenger = { ...event }
+
+        //passenger = Object.assign({}, passenger, event);
+      }
+      return passenger;
+    });
+
+    console.log(this.passengers);
+
+}
+
+handleRemove(event: Passenger){
+
+  this.passengers = this.passengers.filter((passengers: Passenger) => {
+    return passengers.id != event.id;
+  });
+}
+
 }
