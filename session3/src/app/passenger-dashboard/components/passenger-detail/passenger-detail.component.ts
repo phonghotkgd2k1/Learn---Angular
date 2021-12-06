@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from "@angular/core";
+import { Component, Input, Output, EventEmitter, OnChanges, OnInit, SimpleChanges } from "@angular/core";
 
 import { Passenger } from './../../models/passenger.interface';
 @Component({
@@ -11,18 +11,17 @@ import { Passenger } from './../../models/passenger.interface';
         [class.checked-in]="detail.checkedIn"
         >
       </span>
-    <div *ngIf="editing">
-      <input 
-      type="text"
-      [value]="detail.fullname"
-      (input)="onNameChange(name.value)"
-      #name
-      >
-     
-    </div>
-   
 
-     <div *ngIf="!editing">
+      <div *ngIf="editing">
+        <input
+          type="text"
+          [value]="detail.fullname"
+          (input)="onNameChange(name.value)"
+          #name
+        >
+      </div>
+
+      <div *ngIf="!editing">
         {{detail.fullname}}
       </div>
 
@@ -31,6 +30,7 @@ import { Passenger } from './../../models/passenger.interface';
           ? (detail.checkedInDate | date: 'y, MMMM d' | uppercase)
           : 'Not checked in'}}
       </div>
+
       <div>
         Childen: {{detail.children?.length || 0}}
       </div>
@@ -42,10 +42,12 @@ import { Passenger } from './../../models/passenger.interface';
       <button (click)="onRemove()">
         Remove
       </button>
+
+
     </div>
   `
 })
-export class PassengerDetailComponent {
+export class PassengerDetailComponent implements OnChanges, OnInit {
 
   editing: boolean = false;
 
@@ -60,18 +62,35 @@ export class PassengerDetailComponent {
 
   constructor() { }
 
+  ngOnInit(): void {
+    console.log("ngOnInit");
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+
+    if (changes['detail']) {
+
+      this.detail = Object.assign({}, changes['detail'].currentValue);
+    }
+
+    console.log("ngOnChanges");
+  }
+
+
   toggleEdit(): void {
 
-    if(this.editing) {
+    if (this.editing) {
       this.edit.emit(this.detail);
     }
 
     this.editing = !this.editing;
   }
+
   onNameChange(value: string) {
-    // console.log(value);
+    //console.log(value);
     this.detail.fullname = value;
   }
+
   onRemove() {
     this.remove.emit(this.detail);
   }
