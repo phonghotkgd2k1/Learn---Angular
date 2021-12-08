@@ -1,52 +1,29 @@
 import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
 
 import { Passenger } from "./models/passenger.interface";
+
+import { catchError, Observable } from "rxjs";
+import { tap } from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PassengerDashboardService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
-  getPassengers(): Passenger[] {
+  getPassengers(): Observable<Passenger[]> {
 
-    return [
-      {
-        id: 1,
-        fullname: 'John',
-        checkedIn: true,
-        checkedInDate: 1490742000000,
-        children: null,
-      },
-      {
-        id: 2,
-        fullname: 'Stephen',
-        checkedIn: false,
-        checkedInDate: null,
-        children: [{ name: 'Ted', age: 12 }, { name: 'Mark', age: 6 }]
-      },
-      {
-        id: 3,
-        fullname: 'Rose',
-        checkedIn: true,
-        checkedInDate: 1491602000000,
-        children: null,
-      },
-      {
-        id: 4,
-        fullname: 'James',
-        checkedIn: true,
-        checkedInDate: 1492742000000,
-        children: [{ name: 'Jesica', age: 3 }]
-      },
-      {
-        id: 5,
-        fullname: 'Tina',
-        checkedIn: false,
-        checkedInDate: null,
-        children: null
-      },
-    ];
+    return this.http
+      .get<Passenger[]>('http://localhost:3000/passengers')
+      .pipe(
+        tap(data => console.log(data)),
+        //catchError(this.handleError<Passenger[]>('getPassengers', [])),
+      );
+  }
+
+  handleError<T>(arg0: string, arg1: never[]): (err: any, caught: Observable<Passenger[]>) => import("rxjs").ObservableInput<any> {
+    throw new Error("Method not implemented.");
   }
 }

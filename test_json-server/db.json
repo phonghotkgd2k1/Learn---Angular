@@ -1,0 +1,32 @@
+{
+  "passengers": [
+    {
+      "fullname": "John Biden",
+      "id": 1,
+      "checkedIn": true,
+      "baggage": "none",
+      "checkInDate": 1490742000000
+    },
+    {
+      "id": 2,
+      "fullname": "Donald Trump",
+      "checkedIn": false,
+      "checkInDate": null,
+      "baggage": ""
+    },
+    {
+      "id": 4,
+      "fullname": "Black Obama",
+      "checkedIn": true,
+      "checkInDate": 1488412800000,
+      "baggage": ""
+    },
+    {
+      "id": 5,
+      "fullname": "George Walker Bush",
+      "checkedIn": false,
+      "checkInDate": null,
+      "baggage": ""
+    }
+  ]
+}
